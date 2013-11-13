@@ -31,6 +31,7 @@
  * Inspired by the openni_tracker by Tim Field and PrimeSense's NiTE 2.0 - Simple Skeleton Sample
  */
 
+//These includes are not in NiTE example
 #include <ros/ros.h>
 #include <ros/package.h>
 #include <tf/transform_broadcaster.h>
@@ -253,17 +254,17 @@ int main(int argc, char **argv) {
 //	nRetVal = g_Context.StartGeneratingAll();
 //	CHECK_RC(nRetVal, "StartGenerating");
 
-    ros::init(argc, argv, "openni_tracker");
-    ros::NodeHandle nh, nh_priv("~");
+    ros::init(argc, argv, "openni_tracker"); //Different than NiTE sample
+    ros::NodeHandle nh, nh_priv("~"); //Different than NiTE sample
 
     nite::UserTracker userTracker;
     nite::Status niteRc;
 
     nite::NiTE::initialize();
 
-	ros::Rate r(30);
-    std::string frame_id("openni_depth_frame");
-    nh_priv.getParam("camera_frame_id", frame_id);
+    ros::Rate r(30); //Different than NiTe sample
+    std::string frame_id("openni_depth_frame");//Different than NiTe sample
+    nh_priv.getParam("camera_frame_id", frame_id);//Different than NiTe sample
 
 	niteRc = userTracker.create();
 	if (niteRc != nite::STATUS_OK)
@@ -275,10 +276,10 @@ int main(int argc, char **argv) {
 
 	nite::UserTrackerFrameRef userTrackerFrame;
 
-	while (ros::ok())
+	while (ros::ok()) //ros::ok() Replaces !wasKeyboardHit()
 	{
 		niteRc = userTracker.readFrame(&userTrackerFrame);
-		if (niteRc == nite::STATUS_OK)
+		if (niteRc == nite::STATUS_OK) //Slightly different case handling
 		{
 			const nite::Array<nite::UserData>& users = userTrackerFrame.getUsers();
 			for (int i = 0; i < users.getSize(); ++i)
@@ -307,5 +308,7 @@ int main(int argc, char **argv) {
 
 		r.sleep();
 	}
+
+	nite::NiTE::shutdown();
 	return 0;
 }
